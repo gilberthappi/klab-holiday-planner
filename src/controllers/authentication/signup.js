@@ -1,5 +1,5 @@
-import { generateToken, hashPassword } from "../../utils";
-import { USER } from "../../models";
+import { generateToken, hashPassword } from '../../utils';
+import { USER } from '../../models';
 
 export const signUp = async (req, res) => {
   try {
@@ -7,7 +7,7 @@ export const signUp = async (req, res) => {
 
     if (User) {
       return res.status(409).json({
-        message: "User with this email already exists",
+        message: 'User with this email already exists',
       });
     }
 
@@ -17,10 +17,10 @@ export const signUp = async (req, res) => {
     console.log(req.body);
     const newUser = await USER.create(req.body);
     if (!newUser) {
-      res.status(404).json({ message: "failed to register" });
+      res.status(404).json({ message: 'failed to register' });
     }
     const token = generateToken({
-      _id: newUser._id,
+      id: newUser.id,
       // email: newUser.email,
     });
 
