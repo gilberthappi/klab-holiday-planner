@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 import mainRouter from './src/routes';
+import { log } from 'console';
 
 require('dotenv').config();
 
@@ -14,6 +15,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/v1', mainRouter);
 
+app.use("/",(req,res)=>{
+  console.log("hello");
+})
 mongoose.connect(process.env.DB_CONNECTION_PROD).then(() => {
   console.log('Database is connected');
 });
