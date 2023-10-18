@@ -1,8 +1,15 @@
+import { query } from 'express';
 import { TOUR } from '../../models';
 
 export const getTours = async (req, res) => {
   try {
-    const data = await TOUR.find({});
+
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.find(query);
     res.status(200).json(data);
   } catch (error) {
     console.log(error.message);
@@ -12,7 +19,12 @@ export const getTours = async (req, res) => {
 
 export const getTour = async (req, res) => {
   try {
-    const data = await TOUR.findById(req.params.id);
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findOne(query);
     res.status(200).json(data);
   } catch (error) {
     console.log(error.message);

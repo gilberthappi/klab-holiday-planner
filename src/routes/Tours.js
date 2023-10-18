@@ -12,24 +12,24 @@ tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
-tourRouter.get('/getOneElement/:id', getTour);
+tourRouter.get('/getOneElement', getTour);
 
 tourRouter.get('/findAll/:id', findTours);
 
 tourRouter.get('/findOne/:title', findTour);
 
-tourRouter.post('/addNew', uploads, createTour);
+tourRouter.post('/addNew', isAdmin, uploads, createTour);
 
-tourRouter.post('/', isAdmin, createTours);
+tourRouter.post('/', isAdmin, uploads, createTours);
 
-tourRouter.post('/addMany', createTours);
+tourRouter.post('/addMany', isAdmin, createTours);
 
-tourRouter.put('/updateEntireElement/:id', updateTour);
+tourRouter.put('/updateEntireElement/:id',isAdmin, updateTour);
 
-tourRouter.patch('/updatePartiallyElement/:id', updateTourElement);
+tourRouter.patch('/updatePartiallyElement/:id', isAdmin, updateTourElement);
 
-tourRouter.delete('/deleteOne/:id', deleteTour);
+tourRouter.delete('/deleteOne/:id', isAdmin, deleteTour);
 
-tourRouter.delete('/deleteMany/:title', deleteTours);
+tourRouter.delete('/deleteMany', isAdmin, deleteTours);
 
 export default tourRouter;

@@ -2,7 +2,12 @@ import { TOUR } from '../../models';
 
 export const findTour = async (req, res) => {
   try {
-    const data = await TOUR.findOne({ title: req.params.title });
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findOne(query);
     if (!data) {
       return res.status(404).json({ message: 'not found' });
     }
@@ -15,7 +20,12 @@ export const findTour = async (req, res) => {
 
 export const findTours = async (req, res) => {
   try {
-    const data = await TOUR.findMany({ title: req.params.title });
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findMany(query);
     if (!data) {
       return res.status(404).json({ message: 'not found' });
     }

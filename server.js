@@ -1,13 +1,16 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import cors from 'cors';
 
 import mainRouter from './src/routes';
-import { log } from 'console';
+// import { log } from 'console';
 
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
 
 const port = process.env.PORT || 3000;
 

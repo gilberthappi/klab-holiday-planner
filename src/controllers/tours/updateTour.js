@@ -2,11 +2,15 @@ import { TOUR } from '../../models';
 
 export const updateTour = async (req, res) => {
   try {
-    const { id } = req.params;
-    const data = await TOUR.findByIdAndUpdate(id, req.body);
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findOneAndUpdate(query);
     if (!data) {
       return res.status(404).json({
-        message: `can not find any product with ID ${id}`,
+        message: `can not find any product `,
       });
     }
     const updatedData = await TOUR.findById(id);
@@ -19,11 +23,15 @@ export const updateTour = async (req, res) => {
 
 export const updateTourElement = async (req, res) => {
   try {
-    const { id } = req.params;
-    const data = await TOUR.findByIdAndUpdate(id, req.body);
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findOneAndUpdate(query);
     if (!data) {
       return res.status(404).json({
-        message: `can not find any product with ID ${id}`,
+        message: `can not find any product `,
       });
     }
     const updatedData = await TOUR.findById(id);

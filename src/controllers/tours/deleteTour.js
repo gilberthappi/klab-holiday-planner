@@ -2,10 +2,14 @@ import { TOUR } from '../../models';
 
 export const deleteTour = async (req, res) => {
   try {
-    const { id } = req.params;
-    const data = await TOUR.findByIdAndDelete(id);
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.findOneDelete(query);
     if (!data) {
-      return res.status(404).json({ message: `cannot find any element with ID ${id}` });
+      return res.status(404).json({ message: `cannot find any element ` });
     }
     res.status(200).json(data);
   } catch (error) {
@@ -16,7 +20,13 @@ export const deleteTour = async (req, res) => {
 
 export const deleteTours = async (req, res) => {
   try {
-    const data = await TOUR.deleteMany({ title: req.params.title });
+
+    const { fieldName, value } = req.query;
+    let query = {};
+    if (fieldName && value) {
+      query[fieldName] = value;
+    }
+    const data = await TOUR.deleteMany(query);
 
     // Check if any documents were deleted
     if (data.deletedCount === 0) {
