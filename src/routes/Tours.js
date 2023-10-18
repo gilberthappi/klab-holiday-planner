@@ -18,9 +18,7 @@ tourRouter.get('/findAll/:id', findTours);
 
 tourRouter.get('/findOne/:title', findTour);
 
-tourRouter.post('/addNew', createTour);
-
-tourRouter.post('/', uploads, createTour);
+tourRouter.post('/addNew', uploads, createTour);
 
 tourRouter.post('/', isAdmin, createTours);
 

@@ -12,7 +12,6 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-// const DB_CONNECTION_PROD = 'mongodb+srv://gdushimimana6:happi1234@cluster0.rpvr4bu.mongodb.net/?retryWrites=true&w=majority';
 app.use('/api/v1', mainRouter);
 
 mongoose.connect(process.env.DB_CONNECTION_PROD).then(() => {
