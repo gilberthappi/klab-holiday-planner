@@ -13,7 +13,7 @@ export const updateTour = async (req, res) => {
         message: `can not find any product `,
       });
     }
-    const updatedData = await TOUR.findById(id);
+    const updatedData = await TOUR.findOne(query);
     res.status(200).json(updatedData);
   } catch (error) {
     console.log(error.message);
@@ -34,7 +34,7 @@ export const updateTourElement = async (req, res) => {
         message: `can not find any product `,
       });
     }
-    const updatedData = await TOUR.findById(id);
+    const updatedData = await TOUR.findOne(query);
     res.status(200).json(updatedData);
   } catch (error) {
     console.log(error.message);

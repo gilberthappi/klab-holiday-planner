@@ -24,9 +24,9 @@ tourRouter.post('/', isAdmin, uploads, createTours);
 
 tourRouter.post('/addMany', isAdmin, createTours);
 
-tourRouter.put('/updateEntireElement/:id',isAdmin, updateTour);
+tourRouter.put('/updateEntireElement',isAdmin, updateTour);
 
-tourRouter.patch('/updatePartiallyElement/:id', isAdmin, updateTourElement);
+tourRouter.patch('/updatePartiallyElement', isAdmin, updateTourElement);
 
 tourRouter.delete('/deleteOne/:id', isAdmin, deleteTour);
 
