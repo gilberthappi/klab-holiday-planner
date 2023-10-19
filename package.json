@@ -21,6 +21,9 @@
     "start": "node server.js",
     "dev": "nodemon --exec babel-node server.js"
   },
+  "engines": {
+    "node": ">=14.20.1"
+  },
   "name": "klab-holiday-planner",
   "description": "***Holiday_planner***",
   "version": "1.0.0",
