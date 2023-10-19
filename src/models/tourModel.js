@@ -15,7 +15,7 @@ const tourSchema = new mongoose.Schema({
   fromMonth: String,
   toMonth: String,
   departureTime: String,
-  Returntime: String,
+  ReturnTime: String,
   image: String,
   Gallery: String,
   Price_included: String,
