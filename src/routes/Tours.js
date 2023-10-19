@@ -14,7 +14,7 @@ tourRouter.get('/all', getTours);
 
 tourRouter.post('/addNew', isAdmin, createTours);
 
-tourRouter.put('/updateEntireElement',isAdmin, updateTour);
+tourRouter.put('/update',isAdmin, updateTour);
 
 tourRouter.delete('/delete', isAdmin, deleteTours);
 

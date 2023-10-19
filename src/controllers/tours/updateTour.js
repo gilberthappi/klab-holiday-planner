@@ -2,42 +2,29 @@ import { TOUR } from '../../models';
 
 export const updateTour = async (req, res) => {
   try {
-    const { fieldName, value } = req.query;
+    // Extract the query parameters from the request body or query string.
+    const { fieldName, value, updateData } = req.body;
+    
+    // Define a query based on fieldName and value.
     let query = {};
     if (fieldName && value) {
       query[fieldName] = value;
     }
-    const data = await TOUR.findOneAndUpdate(query);
-    if (!data) {
-      return res.status(404).json({
-        message: `can not find any product `,
-      });
-    }
-    const updatedData = await TOUR.findOne(query);
-    res.status(200).json(updatedData);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ message: error.message });
-  }
-};
+    
+    // Use the `findOneAndUpdate` method to update the matching document.
+    const updatedTour = await TOUR.findOneAndUpdate(query, updateData, {
+      new: true, // Return the updated document
+    });
 
-export const updateTourElement = async (req, res) => {
-  try {
-    const { fieldName, value } = req.query;
-    let query = {};
-    if (fieldName && value) {
-      query[fieldName] = value;
-    }
-    const data = await TOUR.findOneAndUpdate(query);
-    if (!data) {
+    if (!updatedTour) {
       return res.status(404).json({
-        message: `can not find any product `,
+        message: 'Tour not found',
       });
     }
-    const updatedData = await TOUR.findOne(query);
-    res.status(200).json(updatedData);
+
+    res.status(200).json(updatedTour);
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
