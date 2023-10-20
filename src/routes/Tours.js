@@ -1,20 +1,18 @@
 import express from 'express';
-
 import {
-  getTours, createTours, updateTour,
-  deleteTours, getTour
+  getTours, createTour, createTours, updateTour,
+  deleteTours
 } from '../controllers/tours';
-// import { verifyToken } from '../middleware';
-
+// import { verifyToken, isAdmin, uploads } from '../middleware';
+import { uploaded } from '../middleware';
 const tourRouter = express.Router();
-
 // tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
-tourRouter.get('/:id', getTour);
+tourRouter.post('/addNew',  uploaded, createTour);
 
-tourRouter.post('/addNew', createTours);
+tourRouter.post('/addNews', uploaded, createTours);
 
 tourRouter.put('/update', updateTour);
 

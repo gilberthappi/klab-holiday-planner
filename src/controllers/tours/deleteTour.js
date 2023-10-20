@@ -14,7 +14,6 @@ export const deleteTours = async (req, res) => {
     if (data.deletedCount === 0) {
       return res.status(404).json({ message: 'No matching documents found for deletion' });
     }
-
     res.status(200).json({ message: 'Delete successful', deletedCount: data.deletedCount });
   } catch (error) {
     console.error(error.message);
