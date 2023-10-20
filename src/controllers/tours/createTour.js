@@ -1,23 +1,38 @@
 import { TOUR } from '../../models';
-import uploadCloudinary from '../../utils/cloudinary';
-import { v2 as cloudinary } from 'cloudinary';
+import {v2 as cloudinary} from 'cloudinary';
 
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDNAME,
+  api_key: process.env.APIKEY,
+  api_secret: process.env.APISECRET,
+});
 
 export const createTour = async (req, res) => {
   try {
     // let dropImage= "";
-    if (req.file) {
-      const image = await uploadCloudinary(req.file);
-        req.body.backdropImage = image;
-        const newTour = req.body;
-        await TOUR.create(newTour);
-        res.status(200).json(newTour);
+    if (req.files) {
+      let imagesArray = [];
+      let dropImages = (await cloudinary.uploader.upload(req.files['backdropImage'][0].path)).secure_url;
+      for (let index = 0; index < req.files.Gallery.length; index++) {
+      imagesArray.push((await cloudinary.uploader.upload(req.files.Gallery[index].path)).secure_url);
+      }
+      let add = await TOUR.create({...req.body, Gallery: imagesArray, backdropImage: dropImages});
+      if (!add) {
+        return res.status(404).json({
+          message: `failed to add tour `,
+        });
+       
+      } 
+      res.status(201).json({
+          message: "tour created successfully",
+          data: add,
+        })
     }
 
- 
-    // res.status(200).json({
-    //   message: 'Tour created successfully',
-    // });
   } catch (error) {
     console.log('error', error);
     res.status(500).json({
