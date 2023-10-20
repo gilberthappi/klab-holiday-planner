@@ -4,7 +4,7 @@ import {
   getTours, createTours, updateTour,
   deleteTours
 } from '../controllers/tours';
-import { verifyToken, isAdmin, uploads } from '../middleware';
+import { verifyToken } from '../middleware';
 
 const tourRouter = express.Router();
 
@@ -12,10 +12,10 @@ tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
-tourRouter.post('/addNew', isAdmin, createTours);
+tourRouter.post('/addNew', createTours);
 
-tourRouter.put('/update',isAdmin, updateTour);
+tourRouter.put('/update', updateTour);
 
-tourRouter.delete('/delete', isAdmin, deleteTours);
+tourRouter.delete('/delete', deleteTours);
 
 export default tourRouter;
