@@ -4,11 +4,11 @@ import {
   getTours, createTours, updateTour,
   deleteTours
 } from '../controllers/tours';
-import { verifyToken } from '../middleware';
+// import { verifyToken } from '../middleware';
 
 const tourRouter = express.Router();
 
-tourRouter.use(verifyToken);
+// tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
