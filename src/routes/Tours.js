@@ -4,9 +4,9 @@ import {
   deleteTours
 } from '../controllers/tours';
 // import { verifyToken, isAdmin, uploads } from '../middleware';
-import { uploaded } from '../middleware';
+import { uploaded, verifyToken } from '../middleware';
 const tourRouter = express.Router();
-// tourRouter.use(verifyToken);
+tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
@@ -16,6 +16,6 @@ tourRouter.post('/addNews', uploaded, createTours);
 
 tourRouter.put('/update', updateTour);
 
-tourRouter.delete('/delete', deleteTours);
+tourRouter.delete('/delete', verifyToken, deleteTours);
 
 export default tourRouter;
