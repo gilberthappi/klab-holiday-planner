@@ -6,7 +6,7 @@ import {
 // import { verifyToken, isAdmin, uploads } from '../middleware';
 import { uploaded, verifyToken } from '../middleware';
 const tourRouter = express.Router();
-tourRouter.use(verifyToken);
+// tourRouter.use(verifyToken);
 
 tourRouter.get('/all', getTours);
 
