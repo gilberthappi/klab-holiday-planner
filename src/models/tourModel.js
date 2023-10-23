@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const tourSchema = new mongoose.Schema({
   destination: String,
-  backdropImage: {type: String, required: true},
+  backdropImage: {type: String},
   title: {type: String, required: true},
   Description: String,
   Duration: String,
@@ -16,7 +16,7 @@ const tourSchema = new mongoose.Schema({
   toMonth: String,
   departureTime: String,
   ReturnTime: String,
-  Gallery: {type: Array, required: true},
+  Gallery: {type: Array},
 
 });
 
