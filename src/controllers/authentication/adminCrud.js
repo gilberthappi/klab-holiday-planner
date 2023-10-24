@@ -30,39 +30,40 @@ export const getUserByEmail = async(req,res)=>{
 }
 
 //update users by email
-export const updateByEmail = async (req,res) => {
+export const updateByEmail = async (req, res) => {
   try {
     const email = req.params.email;
-    const updatedFields = req.body;      
-  
+    const updatedFields = req.body; // Fields will be available as part of multipart/form-data
+    
     const updatedUser = await USER.findOneAndUpdate(
       { email: email },
-      { $set: updatedFields },     // updated form 
-      { new: true }              // Get the updated user data after update
+      { $set: updatedFields },
+      { new: true }
     );
 
     if (!updatedUser) {
       return res.status(404).json({ error: 'User not found' });
     }
-    return res.status(200).json(updatedUser);
     
+    return res.status(200).json(updatedUser);
   } catch (error) {
     console.error("Error updating user:", error.message);
     throw error;
   }
 };
 
-//delete users
-export const deleteUser = async (req,res)=>{
+export const deleteUser = async (req, res) => {
   const email = req.params.email;
   try {
-    const deletedUser = USER.deleteOne({email:email})
+    const deletedUser = await USER.deleteOne({ email: email });
 
-    res.status(200).json({message:`user with email:${email} successfull deleted`});
+    if (deletedUser.deletedCount === 0) {
+      return res.status(404).json({ message: `User with email:${email} not found` });
+    }
 
-    
+    res.status(200).json({ message: `User with email:${email} successfully deleted` });
   } catch (error) {
-    console.log("error",error);
-    res.status(409).json ("Internal server errior")
+    console.error("Error", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-}
+};
