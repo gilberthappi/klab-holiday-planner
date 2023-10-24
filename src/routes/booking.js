@@ -7,9 +7,9 @@ import {
   updateBooking,
   deleteBooking,
 } from '../controllers/booking/bookingCrud.js';
-import { verifyToken } from '../middleware'; // Make sure to import the necessary middleware
+import { verifyToken, uploaded } from '../middleware'; // Make sure to import the necessary middleware
 
-const bookingRouter = express.Router();
+const bookingRoute = express.Router();
 
 /*
  * @swagger
@@ -42,7 +42,7 @@ const bookingRouter = express.Router();
 
 /**
  * @swagger
- * /bookings/all:
+ * /booking/all:
  *   get:
  *     summary: Get all bookings
  *     tags: [Bookings]
@@ -58,11 +58,11 @@ const bookingRouter = express.Router();
  *                 $ref: '#/components/schemas/Booking'
  */
 
-bookingRouter.get('/all', getBookings);
+bookingRoute.get('/all', getBookings);
 
 /**
  * @swagger
- * /bookings/{id}:
+ * /booking/{id}:
  *   get:
  *     summary: Get a booking by ID
  *     tags: [Bookings]
@@ -84,11 +84,11 @@ bookingRouter.get('/all', getBookings);
  *       404:
  *         description: Booking not found
  */
-bookingRouter.get('/:id', getBookingById);
+bookingRoute.get('/:id', getBookingById);
 
 /**
  * @swagger
- * /bookings:
+ * /booking/book:
  *   post:
  *     summary: Create a new booking
  *     tags: [Bookings]
@@ -96,9 +96,23 @@ bookingRouter.get('/:id', getBookingById);
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data: 
  *           schema:
- *             $ref: '#/components/schemas/Booking'
+ *             type: object
+ *             properties:
+ *               tourID:
+ *                 type: string
+ *               UserID:
+ *                 type: string
+ *               isPayed:
+ *                 type: boolean
+ *               paymentMethod:
+ *                 type: string
+ *             required:
+ *               - tourID
+ *               - UserID
+ *               - isPayed
+ *               - paymentMethod
  *     responses:
  *       201:
  *         description: Booking created successfully
@@ -109,11 +123,11 @@ bookingRouter.get('/:id', getBookingById);
  *       400:
  *         description: Bad request
  */
-bookingRouter.post('/', createBooking);
+bookingRoute.post('/book', uploaded, createBooking);
 
 /**
  * @swagger
- * /bookings/{id}:
+ * /booking/{id}:
  *   put:
  *     summary: Update a booking by ID
  *     tags: [Bookings]
@@ -126,11 +140,24 @@ bookingRouter.post('/', createBooking);
  *           type: string
  *         description: The ID of the booking to update.
  *     requestBody:
- *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Booking'
+ *             type: object
+ *             properties:
+ *               tourID:
+ *                 type: string
+ *               UserID:
+ *                 type: string
+ *               isPayed:
+ *                 type: boolean
+ *               paymentMethod:
+ *                 type: string
+ *             required:
+ *               - tourID
+ *               - UserID
+ *               - isPayed
+ *               - paymentMethod
  *     responses:
  *       200:
  *         description: Booking updated successfully
@@ -143,14 +170,17 @@ bookingRouter.post('/', createBooking);
  *       400:
  *         description: Bad request
  */
-bookingRouter.put('/:id', updateBooking);
+bookingRoute.put('/:id', uploaded, updateBooking);
+
 
 /**
  * @swagger
- * /bookings/{id}:
+ * /booking/{id}:
  *   delete:
  *     summary: Delete a booking by ID
  *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
  *     description: Delete an existing booking by its ID.
  *     parameters:
  *       - in: path
@@ -165,6 +195,6 @@ bookingRouter.put('/:id', updateBooking);
  *       404:
  *         description: Booking not found
  */
-bookingRouter.delete('/:id',verifyToken, deleteBooking);
+bookingRoute.delete('/:id',verifyToken, deleteBooking);
 
-export default bookingRouter;
+export default bookingRoute;
