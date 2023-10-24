@@ -241,7 +241,6 @@ authRouter.delete('/users/delete/:email', verifyToken, isAdmin, deleteUser);
  *         required: true
  *         description: The email of the user to update.
  *     requestBody:
- *       required: true
  *       content:
  *         multipart/form-data:
  *           schema:

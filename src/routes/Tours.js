@@ -135,7 +135,6 @@ tourRouter.delete('/delete', verifyToken, deleteTours);
  *    tags: [Tours]
  *    description: Create a new tour
  *    requestBody:
- *      required: true
  *      content:
  *        multipart/form-data:
  *          schema:
@@ -213,7 +212,6 @@ tourRouter.delete('/delete', verifyToken, deleteTours);
  *         required: true
  *         description: The value of the field to match when identifying the tour.
  *     requestBody:
- *      required: true
  *      content:
  *        multipart/form-data:
  *          schema:
