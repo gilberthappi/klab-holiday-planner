@@ -153,11 +153,6 @@ bookingRoute.post('/book', uploaded, createBooking);
  *                 type: boolean
  *               paymentMethod:
  *                 type: string
- *             required:
- *               - tourID
- *               - UserID
- *               - isPayed
- *               - paymentMethod
  *     responses:
  *       200:
  *         description: Booking updated successfully
