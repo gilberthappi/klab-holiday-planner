@@ -12,9 +12,9 @@ authRouter.post('/changePassword', uploaded, verifyToken, changePassword);
 
 authRouter.get("/users", All);
 authRouter.get('/users/getOne/:email',getUserByEmail);
-authRouter.put('/users/update/:email',uploaded, verifyToken, updateByEmail);
+authRouter.put('/users/update/:email',uploaded, updateByEmail);
 // authRouter.delete('/users/delete/:email',verifyToken,isAdmin,deleteUser)
-authRouter.delete('/users/delete/:email', verifyToken, isAdmin, deleteUser);
+authRouter.delete('/users/delete/:email', deleteUser);
 
 /**
  * @swagger
@@ -253,6 +253,8 @@ authRouter.delete('/users/delete/:email', verifyToken, isAdmin, deleteUser);
  *               fullNames:
  *                 type: string
  *               location:
+ *                 type: string
+ *               role:
  *                 type: string
  *     responses:
  *       200:
