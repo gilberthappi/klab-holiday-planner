@@ -18,7 +18,7 @@ tourRouter.post('/addNews', uploaded, createTours);
 
 tourRouter.put('/update', uploaded, updateTour);
 
-tourRouter.delete('/delete', verifyToken, deleteTours);
+tourRouter.delete('/delete', deleteTours);
 
 /**
  * @swagger
