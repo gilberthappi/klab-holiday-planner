@@ -1,5 +1,6 @@
 import { generateToken, hashPassword } from '../../utils';
 import { USER } from '../../models';
+import { transporter } from '../../utils/mailTransport.js';
 
 export const signUp = async (req, res) => {
   try {
@@ -14,14 +15,30 @@ export const signUp = async (req, res) => {
     const hashedPassword = await hashPassword(req.body.password);
 
     req.body.password = hashedPassword;
-    console.log(req.body);
+
     const newUser = await USER.create(req.body);
     if (!newUser) {
-      res.status(404).json({ message: 'failed to register' });
+      res.status(404).json({ message: 'Failed to register' });
     }
+
+    // Send a welcome email to the user
+    const mailOptions = {
+      from: 'gdushimimana6@gmail.com',
+      to: newUser.email,
+      subject: 'Welcome to Your App',
+      text: 'Thank you for signing up!',
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Email sending failed:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+
     const token = generateToken({
       id: newUser.id,
-      // email: newUser.email,
     });
 
     res.status(201).json({
