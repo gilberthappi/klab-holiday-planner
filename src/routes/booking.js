@@ -6,8 +6,11 @@ import {
   createBooking,
   updateBooking,
   deleteBooking,
+  // getAllBookings,
+  // getAllBookingsAdmin,
+  // deleteBookingByIdAdmin,
 } from '../controllers/booking/bookingCrud.js';
-import { verifyToken, uploaded } from '../middleware'; // Make sure to import the necessary middleware
+import { verifyToken, uploaded, isAdmin } from '../middleware'; // Make sure to import the necessary middleware
 
 const bookingRoute = express.Router();
 
@@ -40,11 +43,35 @@ const bookingRoute = express.Router();
  *   description: Booking API
  */
 
+// /**
+//  * @swagger
+//  * /booking/all:
+//  *   get:
+//  *     summary: Get all bookings
+//  *     security:
+//  *       - bearerAuth: []
+//  *     tags: [Bookings]
+//  *     description: Get a list of all bookings.
+//  *     responses:
+//  *       200:
+//  *         description: Success
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 $ref: '#/components/schemas/Booking'
+//  */
+
+// bookingRoute.get('/all',verifyToken, isAdmin, getAllBookingsAdmin);
+
 /**
  * @swagger
  * /booking/all:
  *   get:
  *     summary: Get all bookings
+ *     security:
+ *       - bearerAuth: []
  *     tags: [Bookings]
  *     description: Get a list of all bookings.
  *     responses:
@@ -67,6 +94,8 @@ bookingRoute.get('/all', getBookings);
  *     summary: Get a booking by ID
  *     tags: [Bookings]
  *     description: Get a single booking by its ID.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -93,6 +122,8 @@ bookingRoute.get('/:id', getBookingById);
  *     summary: Create a new booking
  *     tags: [Bookings]
  *     description: Create a new booking.
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -102,15 +133,12 @@ bookingRoute.get('/:id', getBookingById);
  *             properties:
  *               tourID:
  *                 type: string
- *               UserID:
- *                 type: string
  *               isPayed:
  *                 type: boolean
  *               paymentMethod:
  *                 type: string
  *             required:
  *               - tourID
- *               - UserID
  *               - isPayed
  *               - paymentMethod
  *     responses:
@@ -131,6 +159,8 @@ bookingRoute.post('/book', uploaded, createBooking);
  *   put:
  *     summary: Update a booking by ID
  *     tags: [Bookings]
+ *     security:
+ *       - bearerAuth: []
  *     description: Update an existing booking by its ID.
  *     parameters:
  *       - in: path
@@ -146,8 +176,6 @@ bookingRoute.post('/book', uploaded, createBooking);
  *             type: object
  *             properties:
  *               tourID:
- *                 type: string
- *               UserID:
  *                 type: string
  *               isPayed:
  *                 type: boolean
@@ -190,6 +218,30 @@ bookingRoute.put('/:id', uploaded, updateBooking);
  *       404:
  *         description: Booking not found
  */
-bookingRoute.delete('/:id',verifyToken, deleteBooking);
+bookingRoute.delete('/:id', deleteBooking);
+
+// /**
+//  * @swagger
+//  * /booking/{id}:
+//  *   delete:
+//  *     summary: Delete a booking by ID
+//  *     tags: [Bookings]
+//  *     security:
+//  *       - bearerAuth: []
+//  *     description: Delete an existing booking by its ID.
+//  *     parameters:
+//  *       - in: path
+//  *         name: id
+//  *         required: true
+//  *         schema:
+//  *           type: string
+//  *         description: The ID of the booking to delete.
+//  *     responses:
+//  *       200:
+//  *         description: Booking deleted successfully
+//  *       404:
+//  *         description: Booking not found
+//  */
+// bookingRoute.delete('/:id',verifyToken, isAdmin, deleteBookingByIdAdmin);
 
 export default bookingRoute;

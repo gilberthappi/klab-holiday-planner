@@ -131,7 +131,7 @@ tourRouter.delete('/delete', deleteTours);
  * @swagger
  * /tour/addNew:
  *  post:
- *    summary: -Create a new tour
+ *    summary: Create a new tour
  *    tags: [Tours]
  *    description: Create a new tour
  *    requestBody:

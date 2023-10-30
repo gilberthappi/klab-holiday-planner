@@ -23,9 +23,9 @@ export const signUp = async (req, res) => {
 
     // Send a welcome email to the user
     const mailOptions = {
-      from: 'gdushimimana6@gmail.com',
+      from: 'robertwilly668@gmail.com',
       to: newUser.email,
-      subject: 'Welcome to Your App',
+      subject: 'Welcome to HOLIDAY PLANNER',
       text: 'Thank you for signing up!',
     };
 

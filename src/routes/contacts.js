@@ -1,5 +1,6 @@
 import express from 'express';
 import { Contact } from '../controllers/contact/contactMe.js';
+import { uploaded } from '../middleware/photoStorage.js';
 
 const contactRouter = express.Router();
 
@@ -70,6 +71,6 @@ const contactRouter = express.Router();
  *               message: "User with this email does not exist"
  */
 
-contactRouter.post('/contact', Contact);
+contactRouter.post('/contact',uploaded, Contact);
 
 export default contactRouter;
