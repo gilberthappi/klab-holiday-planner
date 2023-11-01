@@ -10,9 +10,9 @@ const bookingSchema = mongoose.Schema({
         ref: 'USER', // Reference to the "USER" model
     },
     Date: String,
-    Status: String,
+    Status: { type: String, default: 'pending' },
     NumberOfTicket: String,
-    isPayed: Boolean,
+    isPayed: { type: Boolean, default: false},
     paymentMethod: String,
 });
 
