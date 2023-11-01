@@ -1,76 +1,126 @@
 import express from 'express';
-import { Contact } from '../controllers/contact/contactMe.js';
-import { uploaded } from '../middleware/photoStorage.js';
+import {
+  createContact,
+  getContacts,
+  getContactById,
+  deleteContact,
+} from '../controllers/contact/contactMe.js';
 
 const contactRouter = express.Router();
 
+// Routes
 /**
  * @swagger
  * tags:
- *   name: Contact
- *   description: Contact API
- */
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Contact-Us:
- *       type: object
- *       properties:
- *         email:
- *           type: string
- *           required: true
- *         message:
- *           type: string
- *           required: true
-
- *   responses:
- *     ContactResponse:
- *       description: MESSAGE sent successfully
- *       content:
- *         application/json:
- *           example:
- *             message: "MESSAGE sent successfully"
+ *   name: Contacts
+ *   description: API for managing contacts
  */
 
 /**
  * @swagger
  * /cont/contact:
  *   post:
- *     summary: User Contact
- *     tags: [Contact]
- *     description: Contact Us.
+ *     summary: Create a new contact
+ *     tags: [Contacts]
  *     requestBody:
- *       required: true
  *       content:
  *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
- *               email:
+ *               Full name:
  *                 type: string
- *               message:
+ *               Email:
+ *                 type: string
+ *               Phone number:
+ *                 type: string
+ *               Service:
+ *                 type: string
+ *               Message:
  *                 type: string
  *             required:
  *               - email
- *               - message
+ *               - Message
  *     responses:
  *       201:
- *         description: Message sent successfully
+ *         description: Contact created successfully
  *         content:
  *           application/json:
  *             $ref: '#/components/schemas/ContactResponse'
  *       400:
  *         description: Bad Request - Invalid data
- *       404:
- *         description: User with this email does not exist
- *         content:
- *           application/json:
- *             example:
- *               message: "User with this email does not exist"
+ *       500:
+ *         description: Internal server error
  */
 
-contactRouter.post('/contact',uploaded, Contact);
+
+/**
+ * @swagger
+ * /cont/contact/all:
+ *   get:
+ *     summary: Get all contacts
+ *     tags: [Contacts]
+ *     responses:
+ *       200:
+ *         description: List of contacts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Contact-Us'
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /cont/contact/{id}:
+ *   get:
+ *     summary: Get a contact by ID
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contact details
+ *         content:
+ *           application/json:
+ *             $ref: '#/components/schemas/Contact-Us'
+ *       404:
+ *         description: Contact not found
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * /cont/contact/{id}:
+ *   delete:
+ *     summary: Delete a contact by ID
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Contact deleted successfully
+ *       404:
+ *         description: Contact not found
+ *       500:
+ *         description: Internal server error
+ */
+
+contactRouter.post('/contact', createContact);
+contactRouter.get('/contact/all', getContacts);
+contactRouter.get('/contact/:id', getContactById);
+contactRouter.delete('/contact/:id', deleteContact);
 
 export default contactRouter;

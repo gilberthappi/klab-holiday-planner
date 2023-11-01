@@ -1,55 +1,13 @@
 
-// import { CONTACT } from '../../models';
-// // import { USER } from '../../models';
-// import { transporter } from '../../utils/mailTransport.js';
-
-// export const Contact = async (req, res) => {
-//   try {
-
-//     const DM = await CONTACT.create(req.body);
-//     if (!DM) {
-//       res.status(404).json({ message: 'Failed to SEND message' });
-//     }
-//     console.log('Recipient Email:', DM.email);
-//     // Send a welcome email to the user
-//     const mailOptions = {
-//       from: 'robertwilly668@gmail.com',
-//       to: DM.email,
-//       subject: 'Welcome to HOLIDAY PLANNER App',
-//       text: 'Thank you for CONTACT US!',
-//     };
-
-//     transporter.sendMail(mailOptions, (error, info) => {
-//       if (error) {
-//         console.error('Email sending failed:', error);
-//       } else {
-//         console.log('Email sent:', info.response);
-//       }
-//     });
-
-
-//     res.status(201).json({
-//       message: 'MESSAGE sent successfully',
-//       CONTACT: {
-//         email: DM.email,
-//         message: DM.message,
-//       },
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 import { CONTACT } from '../../models';
 import { transporter } from '../../utils/mailTransport.js';
 
-export const Contact = async (req, res) => {
+export const createContact = async (req, res) => {
   try {
-    // Create a contact record in the database
     const newContact = await CONTACT.create(req.body);
 
     if (!newContact) {
-      return res.status(404).json({ message: 'Failed to send message' });
+      return res.status(400).json({ message: 'Bad Request - Invalid data' });
     }
 
     console.log('Recipient Email:', newContact.email);
@@ -73,15 +31,54 @@ export const Contact = async (req, res) => {
         // Respond to the client
         res.status(201).json({
           message: 'Message sent successfully',
-          CONTACT: {
-            email: newContact.email,
-            message: newContact.message,
-          },
+          contact: newContact,
         });
       }
     });
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getContacts = async (req, res) => {
+  try {
+    const contacts = await CONTACT.find();
+    res.status(200).json(contacts);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const getContactById = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    const contact = await CONTACT.findById(contactId);
+
+    if (!contact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+
+    res.status(200).json(contact);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const deleteContact = async (req, res) => {
+  try {
+    const contactId = req.params.id;
+    const deletedContact = await CONTACT.findByIdAndDelete(contactId);
+
+    if (!deletedContact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+
+    res.status(200).json({ message: 'Contact deleted successfully' });
+  } catch (error) {
+    console.error(error.message);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
