@@ -5,6 +5,7 @@ import {
   getContactById,
   deleteContact,
 } from '../controllers/contact/contactMe.js';
+import { uploaded } from '../middleware/photoStorage.js';
 
 const contactRouter = express.Router();
 
@@ -118,7 +119,7 @@ const contactRouter = express.Router();
  *         description: Internal server error
  */
 
-contactRouter.post('/contact', createContact);
+contactRouter.post('/contact',uploaded, createContact);
 contactRouter.get('/contact/all', getContacts);
 contactRouter.get('/contact/:id', getContactById);
 contactRouter.delete('/contact/:id', deleteContact);
