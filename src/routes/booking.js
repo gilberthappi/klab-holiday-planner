@@ -114,7 +114,6 @@ bookingRoute.get('/all', getBookings);
  *         description: Booking not found
  */
 bookingRoute.get('/:id', getBookingById);
-
 /**
  * @swagger
  * /booking/book:
@@ -127,20 +126,23 @@ bookingRoute.get('/:id', getBookingById);
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data: 
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
  *               tourID:
  *                 type: string
- *               isPayed:
- *                 type: boolean
+ *               UserID:
+ *                 type: string
  *               paymentMethod:
+ *                 type: string
+ *               Date:
+ *                 type: string
+ *               NumberOfTicket:
  *                 type: string
  *             required:
  *               - tourID
- *               - isPayed
- *               - paymentMethod
+ *               - UserID
  *     responses:
  *       201:
  *         description: Booking created successfully
@@ -151,6 +153,7 @@ bookingRoute.get('/:id', getBookingById);
  *       400:
  *         description: Bad request
  */
+
 bookingRoute.post('/book', uploaded, createBooking);
 
 /**
@@ -177,9 +180,11 @@ bookingRoute.post('/book', uploaded, createBooking);
  *             properties:
  *               tourID:
  *                 type: string
- *               isPayed:
- *                 type: boolean
  *               paymentMethod:
+ *                 type: string
+ *               Date:
+ *                 type: string
+ *               NumberOfTicket:
  *                 type: string
  *     responses:
  *       200:

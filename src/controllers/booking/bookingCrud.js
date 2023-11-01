@@ -1,4 +1,4 @@
-import { Booking } from '../../models';
+import { Booking, USER, TOUR } from '../../models';
 
 // Create a new booking
 export const createBooking = async (req, res) => {
@@ -7,30 +7,54 @@ export const createBooking = async (req, res) => {
         await newBooking.save();
         res.status(201).json(newBooking);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error creating booking:', error);
+        res.status(500).json({ message: 'Failed to create a booking' });
     }
 };
 
-// Get all bookings
+// Get all bookings with user and tour details (without using populate)
 export const getBookings = async (req, res) => {
     try {
         const bookings = await Booking.find();
-        res.status(200).json(bookings);
+        const bookingsWithDetails = await Promise.all(
+            bookings.map(async (booking) => {
+                const user = await USER.findById(booking.UserID);
+                const tour = await TOUR.findById(booking.tourID);
+                return {
+                    ...booking.toObject(),
+                    user: user,
+                    tour: tour,
+                };
+            })
+        );
+        res.status(200).json(bookingsWithDetails);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error getting bookings:', error);
+        res.status(500).json({ message: 'Failed to retrieve bookings' });
     }
 };
 
-// Get a specific booking by ID
+// Get a specific booking by ID with user and tour details (without using populate)
 export const getBookingById = async (req, res) => {
     const { id } = req.params;
 
     try {
         const booking = await Booking.findById(id);
         if (!booking) return res.status(404).json({ message: 'Booking not found' });
-        res.status(200).json(booking);
+
+        const user = await USER.findById(booking.UserID);
+        const tour = await TOUR.findById(booking.tourID);
+
+        const bookingWithDetails = {
+            ...booking.toObject(),
+            user: user,
+            tour: tour,
+        };
+
+        res.status(200).json(bookingWithDetails);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error getting a booking by ID:', error);
+        res.status(500).json({ message: 'Failed to retrieve the booking' });
     }
 };
 
@@ -43,7 +67,8 @@ export const updateBooking = async (req, res) => {
         if (!updatedBooking) return res.status(404).json({ message: 'Booking not found' });
         res.status(200).json(updatedBooking);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error updating a booking by ID:', error);
+        res.status(500).json({ message: 'Failed to update the booking' });
     }
 };
 
@@ -56,9 +81,11 @@ export const deleteBooking = async (req, res) => {
         if (!deletedBooking) return res.status(404).json({ message: 'Booking not found' });
         res.status(200).json({ message: 'Booking deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Error deleting a booking by ID:', error);
+        res.status(500).json({ message: 'Failed to delete the booking' });
     }
 };
+
 // #############################################################################
 
 // import { Booking, USER, TOUR } from '../../models';
