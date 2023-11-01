@@ -24,6 +24,7 @@ const contactRouter = express.Router();
  *     summary: Create a new contact
  *     tags: [Contacts]
  *     requestBody:
+ *       required: true
  *       content:
  *         multipart/form-data:
  *           schema:
@@ -31,7 +32,7 @@ const contactRouter = express.Router();
  *             properties:
  *               Full name:
  *                 type: string
- *               Email:
+ *               email:
  *                 type: string
  *               Phone number:
  *                 type: string
