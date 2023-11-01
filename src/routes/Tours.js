@@ -77,12 +77,6 @@ tourRouter.delete('/delete', deleteTours);
  *     responses:
  *       200:
  *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Tour'
  */
 
 
@@ -109,10 +103,6 @@ tourRouter.delete('/delete', deleteTours);
  *     responses:
  *       200:
  *         description: Tour found successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Tour'
  *       404:
  *         description: Tour not found
  * */
@@ -181,10 +171,6 @@ tourRouter.delete('/delete', deleteTours);
  *    responses:
  *       201:
  *         description: Tour created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Tour'
  *       404:
  *         description: Failed to add tour
  */
@@ -264,13 +250,6 @@ tourRouter.delete('/delete', deleteTours);
  *               $ref: '#/components/schemas/Tour'
  *       404:
  *         description: Tour not found or update failed
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
  */
 
 
@@ -302,13 +281,6 @@ tourRouter.delete('/delete', deleteTours);
  *         description: Tour deleted successfully
  *       404:
  *         description: Tour not found or delete failed
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
  */
 
 

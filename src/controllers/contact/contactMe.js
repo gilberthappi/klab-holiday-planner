@@ -1,6 +1,7 @@
 
 import { CONTACT } from '../../models';
 import { transporter } from '../../utils/mailTransport.js';
+import { isAdmin } from '../../middleware/isAdmin.js';
 
 export const createContact = async (req, res) => {
   try {
@@ -80,5 +81,32 @@ export const deleteContact = async (req, res) => {
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+export const updateContactAdminResponse = async (req, res) => {
+  const contactId = req.params.id;
+  const { adminResponse } = req.body;
+
+  // Check if the user making the update is an admin (You'll need to implement admin authentication)
+  // if (!isAdmin(req.user)) {
+  //     return res.status(403).json({ message: 'Access denied. You are not an admin.' });
+  // }
+
+  try {
+      const contact = await CONTACT.findByIdAndUpdate(
+          contactId,
+          { adminResponse },
+          { new: true }
+      );
+
+      if (!contact) {
+          return res.status(404).json({ message: 'Contact not found' });
+      }
+
+      res.status(200).json({ message: 'Admin response added successfully', contact });
+  } catch (error) {
+      console.error(error.message);
+      res.status(500).json({ message: 'Internal server error' });
   }
 };

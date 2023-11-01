@@ -14,7 +14,7 @@ import { verifyToken, uploaded, isAdmin } from '../middleware'; // Make sure to 
 
 const bookingRoute = express.Router();
 
-/*
+/**
  * @swagger
  * components:
  *   securitySchemes:
@@ -55,12 +55,6 @@ const bookingRoute = express.Router();
 //  *     responses:
 //  *       200:
 //  *         description: Success
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: array
-//  *               items:
-//  *                 $ref: '#/components/schemas/Booking'
 //  */
 
 // bookingRoute.get('/all',verifyToken, isAdmin, getAllBookingsAdmin);
@@ -77,12 +71,6 @@ const bookingRoute = express.Router();
  *     responses:
  *       200:
  *         description: Success
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Booking'
  */
 
 bookingRoute.get('/all', getBookings);
@@ -106,10 +94,6 @@ bookingRoute.get('/all', getBookings);
  *     responses:
  *       200:
  *         description: Booking found successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Booking'
  *       404:
  *         description: Booking not found
  */
@@ -146,10 +130,6 @@ bookingRoute.get('/:id', getBookingById);
  *     responses:
  *       201:
  *         description: Booking created successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Booking'
  *       400:
  *         description: Bad request
  */
@@ -189,10 +169,6 @@ bookingRoute.post('/book', uploaded, createBooking);
  *     responses:
  *       200:
  *         description: Booking updated successfully
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Booking'
  *       404:
  *         description: Booking not found
  *       400:

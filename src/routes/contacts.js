@@ -4,6 +4,7 @@ import {
   getContacts,
   getContactById,
   deleteContact,
+  updateContactAdminResponse,
 } from '../controllers/contact/contactMe.js';
 import { uploaded } from '../middleware/photoStorage.js';
 
@@ -19,6 +20,34 @@ const contactRouter = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *      bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   schemas:
+ *     Contact:
+ *       type: object
+ *       properties:
+ *         fullName:
+ *           type: string
+ *         email:
+ *           type: string
+ *         phoneNumber:
+ *           type: string
+ *         service:
+ *           type: string
+ *         message:
+ *           type: string
+ *         adminResponse:
+ *           type: string
+ */
+
+
+
+/**
+ * @swagger
  * /cont/contact:
  *   post:
  *     summary: Create a new contact
@@ -30,25 +59,22 @@ const contactRouter = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               Full name:
+ *               fullName:
  *                 type: string
  *               email:
  *                 type: string
- *               Phone number:
+ *               phoneNumber:
  *                 type: string
- *               Service:
+ *               service:
  *                 type: string
- *               Message:
+ *               message:
  *                 type: string
  *             required:
  *               - email
- *               - Message
+ *               - message
  *     responses:
  *       201:
  *         description: Contact created successfully
- *         content:
- *           application/json:
- *             $ref: '#/components/schemas/ContactResponse'
  *       400:
  *         description: Bad Request - Invalid data
  *       500:
@@ -70,7 +96,6 @@ const contactRouter = express.Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Contact-Us'
  *       500:
  *         description: Internal server error
  */
@@ -90,9 +115,6 @@ const contactRouter = express.Router();
  *     responses:
  *       200:
  *         description: Contact details
- *         content:
- *           application/json:
- *             $ref: '#/components/schemas/Contact-Us'
  *       404:
  *         description: Contact not found
  *       500:
@@ -120,6 +142,39 @@ const contactRouter = express.Router();
  *         description: Internal server error
  */
 
+/**
+ * @swagger
+ * /cont/contact/adminResponse/{id}:
+ *   put:
+ *     summary: Add an admin response to a contact
+ *     tags: [Contacts]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               adminResponse:
+ *                 type: string
+ *             required:
+ *               - adminResponse
+ *     responses:
+ *       200:
+ *         description: Admin response added successfully
+ *       404:
+ *         description: Contact not found
+ *       500:
+ *         description: Internal server error
+ */
+
+contactRouter.put('/contact/adminResponse/:id',uploaded, updateContactAdminResponse);
 contactRouter.post('/contact',uploaded, createContact);
 contactRouter.get('/contact/all', getContacts);
 contactRouter.get('/contact/:id', getContactById);

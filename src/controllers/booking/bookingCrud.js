@@ -22,6 +22,7 @@ export const getBookings = async (req, res) => {
                 const tour = await TOUR.findById(booking.tourID);
                 return {
                     ...booking.toObject(),
+                    // booking: booking,
                     user: user,
                     tour: tour,
                 };
@@ -47,6 +48,7 @@ export const getBookingById = async (req, res) => {
 
         const bookingWithDetails = {
             ...booking.toObject(),
+            // booking: booking,
             user: user,
             tour: tour,
         };
