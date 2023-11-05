@@ -64,6 +64,9 @@ import mainRouter from './src/routes';
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { swaggerOptions } from './src/utils/swaggerConfig'; // Import the swaggerOptions from your separate file
+import AppError from './src/utils/appError';
+import { globalControllerHandler, globalErrorHandler } from './src/controllers/ErrorController.js';
+
 
 require('dotenv').config();
 
@@ -84,6 +87,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'Welcome to the API' });
 });
+
+//handle Router
+app.all('*', (req, res, next) => {
+  next(new AppError(`can't find ${req.originalUrl} on this server!`, 404));
+});
+
+app.use(globalControllerHandler);
 
 mongoose.connect(process.env.DB_CONNECTION_PROD).then(() => {
   console.log('Database is connected');
