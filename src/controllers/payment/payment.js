@@ -1,8 +1,9 @@
 const PaypackJs = require("paypack-js").default;
+require('dotenv').config();
 
 const paypack = PaypackJs.config({ 
-client_id: "c37f1b12-7e2b-11ee-9d98-deaddb65b9c2", 
-client_secret: "d4384a6ae4c20d36b19cef4e2586a90cda39a3ee5e6b4b0d3255bfef95601890afd80709" 
+client_id: process.env.clientId, 
+client_secret: process.env.clientSecret, 
 });
 
 
