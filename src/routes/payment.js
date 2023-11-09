@@ -1,4 +1,4 @@
-import { cashIn, cashOut} from "../controllers/payment";
+import { Transactions, cashIn, cashOut} from "../controllers/payment";
 import express from 'express';
 import { verifyToken, uploaded, isAdmin } from '../middleware';
 
@@ -6,6 +6,7 @@ const PaymentRoute =express.Router();
 
 PaymentRoute.post('/cashin',uploaded, cashIn);
 PaymentRoute.post('/cashout',uploaded, cashOut);
+PaymentRoute.get('/history',uploaded, Transactions);
 
 /**
  * @swagger
@@ -90,6 +91,18 @@ PaymentRoute.post('/cashout',uploaded, cashOut);
  *         description: Booking created successfully
  *       400:
  *         description: Bad request
+ */
+
+/**
+ * @swagger
+ * /pay/history:
+ *   get:
+ *     summary: Get all Transactions
+ *     tags: [Payment]
+ *     description: Get a list of all Transactions.
+ *     responses:
+ *       200:
+ *         description: Success
  */
 
 export default PaymentRoute;

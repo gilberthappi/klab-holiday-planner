@@ -38,4 +38,13 @@ export const cashOut =(req, res) => {
         });
 }
 
-
+export const Transactions =(req, res) => {
+paypack.transactions({ offset: 0, limit: 100 })
+.then((response) => {
+  console.log(response.data);
+res.status(200).json(response.data);
+})
+.catch((err) => {
+  console.log(err);
+});
+}
