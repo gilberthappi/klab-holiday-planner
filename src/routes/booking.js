@@ -6,6 +6,7 @@ import {
   createBooking,
   updateBooking,
   deleteBooking,
+  getBookingsCount,
   // getAllBookings,
   // getAllBookingsAdmin,
   // deleteBookingByIdAdmin,
@@ -120,8 +121,6 @@ bookingRoute.get('/:id', getBookingById);
  *                 type: string
  *               paymentMethod:
  *                 type: string
- *               Date:
- *                 type: string
  *               NumberOfTicket:
  *                 type: string
  *             required:
@@ -161,8 +160,6 @@ bookingRoute.post('/book', uploaded, createBooking);
  *               tourID:
  *                 type: string
  *               paymentMethod:
- *                 type: string
- *               Date:
  *                 type: string
  *               NumberOfTicket:
  *                 type: string
@@ -224,5 +221,28 @@ bookingRoute.delete('/:id', deleteBooking);
 //  *         description: Booking not found
 //  */
 // bookingRoute.delete('/:id',verifyToken, isAdmin, deleteBookingByIdAdmin);
+
+/**
+ * @swagger
+ * /booking/count:
+ *   post:
+ *     summary: Count Bookings by year 
+ *     tags: [Bookings]
+ *     description: Count Bookings  by a specified period (e.g., "year" ).
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The field name to search for (e.g., "2023").
+ *     responses:
+ *       200:
+ *         description: Bookings count successfully
+ *       404:
+ *         description: Bookings not found
+ * */
+
+bookingRoute.post('/count', getBookingsCount);
 
 export default bookingRoute;

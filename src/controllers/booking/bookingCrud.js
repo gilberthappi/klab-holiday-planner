@@ -3,7 +3,10 @@ import { Booking, USER, TOUR } from '../../models';
 // Create a new booking
 export const createBooking = async (req, res) => {
     try {
-        const newBooking = new Booking(req.body);
+        let now = new Date();
+        const clock = now.toUTCString();
+        
+        const newBooking = new Booking({...req.body, Date: clock });
         await newBooking.save();
         res.status(201).json(newBooking);
     } catch (error) {
@@ -86,6 +89,65 @@ export const deleteBooking = async (req, res) => {
         console.error('Error deleting a booking by ID:', error);
         res.status(500).json({ message: 'Failed to delete the booking' });
     }
+};
+
+
+export const getBookingsCount = async (req, res) => {
+  const { year } = req.query;
+
+  try {
+    const startDate = new Date(year, 0, 1);
+    const endDate = new Date(year, 11, 31);
+
+    // Aggregation count within the specified year range
+    const bookingsCount = await Booking.aggregate([
+      {
+        $match: {
+          Date: {
+            $gte: startDate,
+            $lte: endDate,
+          },
+        },
+      },
+      {
+        $group: {
+          _id: { $month: "$Date" },
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Convert _id values to month names
+    const months = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const response = months.map((monthName, index) => {
+      const matchingMonth = bookingsCount.find(
+        (entry) => entry._id === index + 1
+      );
+      return {
+        label: monthName,
+        count: matchingMonth ? matchingMonth.count : 0,
+      };
+    });
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.error("Error getting a booking by ID:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 };
 
 // #############################################################################
