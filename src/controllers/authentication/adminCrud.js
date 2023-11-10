@@ -3,10 +3,35 @@ import { USER } from '../../models';
 //get all users in the database
 export const All = async(req,res)=>{
   try {
-    let userData = await USER.find();
-    res.status(200).json(userData); 
-
-  } catch (error) {
+    let page = parseInt(req.query.page);
+    let limit = parseInt(req.query.limit);
+    let skipIndex = (page - 1) * limit;
+    let results = {};
+    let count = await USER.countDocuments();
+    if (page === 1) {
+      results.previous = null;
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (skipIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    results.totalPages = Math.ceil(count / limit);
+    results.totalEntries = count;
+    results.currentPage = page;
+    results.limit = limit;
+    results.data = await USER.find().limit(limit).skip(skipIndex);
+    res.status(200).json(results);
+    } catch (error) {
     console.log("error",error);
     res.status(409).json({
       message:"internal server error"

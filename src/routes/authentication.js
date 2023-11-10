@@ -166,6 +166,17 @@ authRouter.delete('/users/delete/:email', deleteUser);
  *     summary: Get all users
  *     tags: [Users]
  *     description: Retrieve a list of all users.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: number
+ *         description: The page to search for (e.g., "3").
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: number
+ *         description: The limit to match in the specified page.
  *     responses:
  *       200:
  *         description: Success

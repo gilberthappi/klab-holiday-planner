@@ -74,6 +74,17 @@ tourRouter.delete('/delete', deleteTours);
  *     summary: Get all tours
  *     tags: [Tours]
  *     description: Get a list of all tours.
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: number
+ *         description: The page to search for (e.g., "3").
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: number
+ *         description: The limit to match in the specified page.
  *     responses:
  *       200:
  *         description: Success

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const bookingSchema = mongoose.Schema({
     tourID: {
@@ -19,4 +20,5 @@ const bookingSchema = mongoose.Schema({
     paymentMethod: String,
 });
 
+bookingSchema.plugin(mongoosePaginate);
 export const Booking = mongoose.model('Booking', bookingSchema);

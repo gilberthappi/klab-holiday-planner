@@ -44,8 +44,35 @@ export const createContact = async (req, res) => {
 
 export const getContacts = async (req, res) => {
   try {
-    const contacts = await CONTACT.find();
-    res.status(200).json(contacts);
+
+    let page = parseInt(req.query.page);
+    let limit = parseInt(req.query.limit);
+    let skipIndex = (page - 1) * limit;
+    let results = {};
+    let count = await CONTACT.countDocuments();
+    if (page === 1) {
+      results.previous = null;
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    if (skipIndex > 0) {
+      results.previous = {
+        page: page - 1,
+        limit: limit,
+      };
+      results.next = {
+        page: page + 1,
+        limit: limit,
+      };
+    }
+    results.totalPages = Math.ceil(count / limit);
+    results.totalEntries = count;
+    results.currentPage = page;
+    results.limit = limit;
+    results.data = await CONTACT.find().limit(limit).skip(skipIndex);
+    res.status(200).json(results);
   } catch (error) {
     console.error(error.message);
     res.status(500).json({ message: 'Internal server error' });
